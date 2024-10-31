@@ -6,11 +6,11 @@
 /*   By: ywakamiy <ywakamiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 13:46:43 by ywakamiy          #+#    #+#             */
-/*   Updated: 2024/10/31 13:46:44 by ywakamiy         ###   ########.fr       */
+/*   Updated: 2024/10/31 19:40:26 by ywakamiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-import net from "net";
+const net = require("net");
 
 function zeroFill(value) {
   return value < 10 ? "0" + value : value;

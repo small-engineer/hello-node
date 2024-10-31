@@ -6,12 +6,12 @@
 /*   By: ywakamiy <ywakamiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 13:46:47 by ywakamiy          #+#    #+#             */
-/*   Updated: 2024/10/31 16:58:25 by ywakamiy         ###   ########.fr       */
+/*   Updated: 2024/10/31 19:42:06 by ywakamiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-import http from "http";
-import { parse } from "url";
+const http = require("http");
+const url = require("url");
 
 const parseTime = (isoDate) => {
   const date = new Date(isoDate);
@@ -25,7 +25,7 @@ const parseTime = (isoDate) => {
 const unixTime = (isoDate) => ({ unixtime: new Date(isoDate).getTime() });
 
 const server = http.createServer((req, res) => {
-  const parsedUrl = parse(req.url, true);
+  const parsedUrl = url.parse(req.url, true);
   const { pathname, query } = parsedUrl;
   const iso = query.iso;
 

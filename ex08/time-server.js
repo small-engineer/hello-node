@@ -6,32 +6,44 @@
 /*   By: ywakamiy <ywakamiy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 13:46:43 by ywakamiy          #+#    #+#             */
-/*   Updated: 2024/10/31 19:40:26 by ywakamiy         ###   ########.fr       */
+/*   Updated: 2024/11/01 16:04:05 by ywakamiy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-const net = require("net");
+const http = require("http");
 
-function zeroFill(value) {
-  return value < 10 ? "0" + value : value;
+if (process.argv.length < 3) {
+  console.log("No arguments");
+  process.exit(-1);
 }
 
-function getCurrentDateTime() {
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = zeroFill(now.getMonth() + 1);
-  const day = zeroFill(now.getDate());
-  const hours = zeroFill(now.getHours());
-  const minutes = zeroFill(now.getMinutes());
+const url = `http://localhost:${process.argv[2]}`;
+const timeoutDuration = 5000;
 
-  return `${year}-${month}-${day} ${hours}:${minutes}`;
+try {
+  const req = http.get(url, (res) => {
+    let rawData = "";
+
+    res.setEncoding("utf8");
+
+    res.on("data", (chunk) => {
+      rawData += chunk;
+    });
+
+    res.on("end", () => {
+      console.log(rawData.length);
+      console.log(rawData);
+    });
+  });
+
+  req.setTimeout(timeoutDuration, () => {
+    console.log("request timed out");
+    req.abort();
+  });
+
+  req.on("error", (err) => {
+    console.log(err.message);
+  });
+} catch (err) {
+  console.log(err.message);
 }
-
-const server = net.createServer((socket) => {
-  socket.end(getCurrentDateTime() + "\n");
-});
-
-const port = process.argv[2];
-server.listen(port, () => {
-  console.log(`Server listening on port ${port}`);
-});
